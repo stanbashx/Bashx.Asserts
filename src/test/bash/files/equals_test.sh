@@ -151,6 +151,27 @@ ${ASSERTS_TEXT}
 done
 rm "${TMP_PATH}"
 
+:> "${STDOUT}"
+:> "${STDERR}"
+TMP_PATH="$(mktemp)"
+printf '%s' $'foo\n' > "${TMP_PATH}"
+ASSERTS_TEXTS=('42' 'foobar' 'barfoo' ' foo' 'foo ' $'\nfoo' $'\tfoo' $'foo\t')
+for ASSERTS_TEXT in "${ASSERTS_TEXTS[@]}"; do
+ "${SCRIPT}" "${TMP_PATH}" "${ASSERTS_TEXT}" >"${STDOUT}" 2>"${STDERR}"; CODE=$?
+ if [[ "${CODE}" != '1' ]]; then
+  echo "Code(${CODE}) error!" >&2; exit 1; fi
+ [[ -s "${STDOUT}" ]] && exit 1
+ EXPECTED_VALUE="\"${TMP_PATH}\"
+does not equal:
+---(${#ASSERTS_TEXT})
+${ASSERTS_TEXT}
+---"
+ ACTUAL_VALUE="$(<"${STDERR}")"
+ if [[ "${ACTUAL_VALUE}" != "${EXPECTED_VALUE}" ]]; then
+  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
+done
+rm "${TMP_PATH}"
+
 echo 'Not implemented!'; exit 1 # todo
 
 rm "${STDOUT}"
