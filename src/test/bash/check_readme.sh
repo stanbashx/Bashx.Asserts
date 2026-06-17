@@ -18,6 +18,8 @@ elif [[ ! -s "${ISSUER}" ]]; then
  echo "File \"${ISSUER}\" is empty!"; exit 1
 fi
 
+EXPECTED_NAME="# ${REP_NAME}"
+
 EXPECTED_RELEASE="
 \`${VERSION}\`
 | [GitHub](https://github.com/${REP_OWNER}/${REP_NAME}/releases/tag/${VERSION})
@@ -35,6 +37,7 @@ $ TMP_PATH=\"\$(mktemp)\"; \\
 
 ACTUAL_TEXT="$(< "${ISSUER}")"
 EXPECTED_TEXTS=(
+ "${EXPECTED_NAME}"
  "${EXPECTED_RELEASE}"
  "${EXPECTED_BUILD_AND_INSTALL}"
  "${EXPECTED_DOWNLOAD_AND_INSTALL}"
