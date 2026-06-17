@@ -17,17 +17,17 @@ elif [[ ! -s "${ASSERTS_PATH}" ]]; then
  echo "\"${ASSERTS_PATH}\" is empty!" >&2; exit 1
 fi
 
-ASSERTS_EXPECTED="$2"
+ASSERTS_TEXT="$2"
 
-if [[ -z "${ASSERTS_EXPECTED}" ]]; then
- echo 'No expected!' >&2; exit 1; fi
+if [[ -z "${ASSERTS_TEXT}" ]]; then
+ echo 'No text!' >&2; exit 1; fi
 
-printf '%s' "${ASSERTS_EXPECTED}" | cmp -s - "${ASSERTS_PATH}"; CODE=$?
+printf '%s' "${ASSERTS_TEXT}" | cmp -s - "${ASSERTS_PATH}"; CODE=$?
 if [[ "${CODE}" == '1' ]]; then
  printf '%s' "\"${ASSERTS_PATH}\"
 does not equal:
----(${#ASSERTS_EXPECTED})
-${ASSERTS_EXPECTED}
+---(${#ASSERTS_TEXT})
+${ASSERTS_TEXT}
 ---" >&2; exit 1
 elif [[ "${CODE}" != '0' ]]; then
  echo 'Read file error!' >&2; exit 1
