@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 
-REP_OWNER='StanleyProjects'
-REP_NAME='Asserts'
+REP_OWNER='stanbashx'
+REP_NAME='Bashx.Asserts'
 VERSION='0.1.1'
 
 if [[ -d 'build' ]]; then
