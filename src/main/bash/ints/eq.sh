@@ -25,7 +25,6 @@ elif ((ASSERTS_EXPECTED < -2147483648 || ASSERTS_EXPECTED > 2147483647)); then
 fi
 
 if [[ "${ASSERTS_ACTUAL}" -ne "${ASSERTS_EXPECTED}" ]]; then
- printf '%s' "Context: \"${ASSERTS_CONTEXT}\"
+ echo "Context: \"${ASSERTS_CONTEXT}\"
 Actual: ${ASSERTS_ACTUAL}
-Expected: ${ASSERTS_EXPECTED}
-" >&2; exit 1; fi
+Expected: ${ASSERTS_EXPECTED}" >&2; exit 1; fi
