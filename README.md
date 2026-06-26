@@ -1,5 +1,5 @@
 # Bashx.Asserts
-A few Bashx.Asserts scripts.
+A few asserts scripts.
 
 ---
 
