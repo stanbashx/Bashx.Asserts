@@ -115,12 +115,12 @@ for ASSERTS_ACTUAL in "${VALUES[@]}"; do
   echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 done
 
-VALUES=('' 'a' '-' ' ' $'\n' $'\t' '-0' '+1' '0.5' '0,5' '05')
+VALUES=('' 'a' '-' ' ' $'\n' $'\t' '-0' '+0' '+1' '0.5' '0,5' '05')
 for ASSERTS_EXPECTED in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
  ASSERTS_CONTEXT='foo'
- ASSERTS_ACTUAL='0'
+ ASSERTS_ACTUAL='42'
  "${SCRIPT}" "${ASSERTS_CONTEXT}" "${ASSERTS_ACTUAL}" "${ASSERTS_EXPECTED}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
  if [[ "${CODE}" != '1' ]]; then
   echo "Code(${CODE}) error!" >&2; exit 1; fi
@@ -136,7 +136,7 @@ for ASSERTS_EXPECTED in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
  ASSERTS_CONTEXT='foo'
- ASSERTS_ACTUAL='0'
+ ASSERTS_ACTUAL='42'
  "${SCRIPT}" "${ASSERTS_CONTEXT}" "${ASSERTS_ACTUAL}" "${ASSERTS_EXPECTED}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
  if [[ "${CODE}" != '1' ]]; then
   echo "Code(${CODE}) error!" >&2; exit 1; fi
@@ -166,7 +166,7 @@ Expected: ${ASSERTS_EXPECTED}"
   echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 done
 
-VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64')
+VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64' '-2147483648' '2147483647')
 for ASSERTS_EXPECTED in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
@@ -185,7 +185,7 @@ Expected: ${ASSERTS_EXPECTED}"
   echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 done
 
-VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64')
+VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64' '-2147483648' '2147483647')
 for ASSERTS_ACTUAL in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
