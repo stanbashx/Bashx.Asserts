@@ -11,5 +11,6 @@ if [[ -z "${ASSERTS_CONTEXT}" ]]; then
 ASSERTS_TEXT="$2"
 
 if [[ -z "${ASSERTS_TEXT}" ]]; then
- echo "Context: \"${ASSERTS_CONTEXT}\"
-Value is empty!" >&2; exit 1; fi
+ printf '%s' "Context: \"${ASSERTS_CONTEXT}\"
+Value is empty!
+" >&2; exit 1; fi
