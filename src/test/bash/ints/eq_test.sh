@@ -83,7 +83,7 @@ ACTUAL_VALUE="$(<"${STDERR}")"
 if [[ "${ACTUAL_VALUE}" != 'No context!' ]]; then
  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 
-VALUES=('' 'a' '-' ' ' $'\n' $'\t' '-0' '+1' '0.5' '0,5' '05')
+VALUES=('' 'a' '-' ' ' $'\n' $'\t' '-0' '+0' '+1' '0.5' '0,5' '05')
 for ASSERTS_ACTUAL in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
@@ -147,7 +147,7 @@ for ASSERTS_EXPECTED in "${VALUES[@]}"; do
   echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 done
 
-VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64')
+VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64' '-2147483648' '2147483647')
 for ASSERTS_ACTUAL in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
