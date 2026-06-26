@@ -24,8 +24,7 @@ elif ((ASSERTS_EXPECTED < -2147483648 || ASSERTS_EXPECTED > 2147483647)); then
  echo "Expected: ${ASSERTS_EXPECTED} is not an int32!" >&2; exit 1
 fi
 
-if [[ "${ASSERTS_ACTUAL}" -ne "${ASSERTS_EXPECTED}" ]]; then
+if [[ "${ASSERTS_ACTUAL}" -eq "${ASSERTS_EXPECTED}" ]]; then
  printf '%s' "Context: \"${ASSERTS_CONTEXT}\"
-Actual: ${ASSERTS_ACTUAL}
-Expected: ${ASSERTS_EXPECTED}
+Values(${#ASSERTS_ACTUAL}) equal: \"${ASSERTS_ACTUAL}\"
 " >&2; exit 1; fi
