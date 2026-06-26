@@ -21,7 +21,7 @@ while IFS= read -r -d '' SCRIPT; do
  if [[ -L "${TEST_PATH}" || ! -f "${TEST_PATH}" \
   || ! -s "${TEST_PATH}" || ! -x "${TEST_PATH}" \
   ]] || ! /usr/local/bin/bash -n "${TEST_PATH}"; then
-  echo "\"${SCRIPT}\" is not covered!"; continue; fi
+  echo "\"${SCRIPT}\" is not covered!" >&2; continue; fi
  if [[ "$(< "${TEST_PATH}")" != *"SCRIPT='${SCRIPT}'"* ]]; then
   echo "\"${TEST_PATH}\" does not test \"${SCRIPT}\"!" >&2; exit 1; fi
  COVERED_COUNT=$((COVERED_COUNT + 1))
@@ -32,7 +32,7 @@ if [[ ${SCRIPTS_COUNT} -eq 0 ]]; then
 elif [[ ${COVERED_COUNT} -eq 0 ]]; then
  echo 'No scripts are covered!' >&2; exit 1
 elif [[ ${COVERED_COUNT} -eq ${SCRIPTS_COUNT} ]]; then
- echo 'All scripts are covered.'
+ echo 'All scripts covered.'
 else
  echo "Only $((COVERED_COUNT * 100 / SCRIPTS_COUNT))% of all scripts are covered!" >&2; exit 1
 fi
