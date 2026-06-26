@@ -2,7 +2,7 @@
 
 SCRIPT='src/main/bash/strings/eq.sh'
 
-echo "Running test of \"${SCRIPT}\"..."
+echo "Running test for \"${SCRIPT}\"..."
 
 if [[ -L "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is a symlink!" >&2; exit 1

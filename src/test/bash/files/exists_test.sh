@@ -2,7 +2,7 @@
 
 SCRIPT='src/main/bash/files/exists.sh'
 
-echo "Running test of \"${SCRIPT}\"..."
+echo "Running test for \"${SCRIPT}\"..."
 
 if [[ -L "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is a symlink!" >&2; exit 1
