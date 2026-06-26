@@ -2,7 +2,7 @@
 
 SCRIPT='src/main/bash/files/contains.sh'
 
-echo "Running test of \"${SCRIPT}\"..."
+echo "Running test for \"${SCRIPT}\"..."
 
 if [[ -L "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is a symlink!" >&2; exit 1
@@ -15,7 +15,7 @@ elif [[ ! -s "${SCRIPT}" ]]; then
 elif [[ ! -x "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is not executable!" >&2; exit 1
 elif ! /usr/local/bin/bash -n "${SCRIPT}"; then
- echo "\"${SCRIPT}\" has wrong syntax!" >&2; exit 1
+ echo "\"${SCRIPT}\" has invalid syntax!" >&2; exit 1
 fi
 
 STDERR="$(mktemp)"

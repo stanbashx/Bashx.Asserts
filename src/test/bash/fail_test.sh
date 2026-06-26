@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-SCRIPT='src/main/bash/strings/not_empty.sh'
+SCRIPT='src/main/bash/fail.sh'
 
 echo "Running test for \"${SCRIPT}\"..."
 
@@ -18,66 +18,60 @@ elif ! /usr/local/bin/bash -n "${SCRIPT}"; then
  echo "\"${SCRIPT}\" has invalid syntax!" >&2; exit 1
 fi
 
+STDOUT="$(mktemp)"
 STDERR="$(mktemp)"
 
-"${SCRIPT}" 2>"${STDERR}"; CODE=$?
+#
+
+:> "${STDOUT}"
+:> "${STDERR}"
+"${SCRIPT}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
 if [[ "${CODE}" != '1' ]]; then
  echo "Code(${CODE}) error!" >&2; exit 1; fi
+if [[ -n "$(<"${STDOUT}")" ]]; then
+ echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
 ACTUAL_VALUE="$(<"${STDERR}")"
 if [[ "${ACTUAL_VALUE}" != 'Wrong arguments!' ]]; then
  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 
+:> "${STDOUT}"
 :> "${STDERR}"
-
-"${SCRIPT}" '' 2>"${STDERR}"; CODE=$?
+"${SCRIPT}" '' '' > "${STDOUT}" 2> "${STDERR}"; CODE=$?
 if [[ "${CODE}" != '1' ]]; then
  echo "Code(${CODE}) error!" >&2; exit 1; fi
+if [[ -n "$(<"${STDOUT}")" ]]; then
+ echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
 ACTUAL_VALUE="$(<"${STDERR}")"
 if [[ "${ACTUAL_VALUE}" != 'Wrong arguments!' ]]; then
  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 
-:> "${STDERR}"
+#
 
-"${SCRIPT}" '' '' '' 2>"${STDERR}"; CODE=$?
+:> "${STDOUT}"
+:> "${STDERR}"
+ASSERTS_MESSAGE=''
+"${SCRIPT}" "${ASSERTS_MESSAGE}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
 if [[ "${CODE}" != '1' ]]; then
  echo "Code(${CODE}) error!" >&2; exit 1; fi
+if [[ -n "$(<"${STDOUT}")" ]]; then
+ echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
 ACTUAL_VALUE="$(<"${STDERR}")"
-if [[ "${ACTUAL_VALUE}" != 'Wrong arguments!' ]]; then
+if [[ "${ACTUAL_VALUE}" != 'No message!' ]]; then
  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 
+:> "${STDOUT}"
 :> "${STDERR}"
-
-"${SCRIPT}" '' '' 2>"${STDERR}"; CODE=$?
+ASSERTS_MESSAGE='foo'
+"${SCRIPT}" "${ASSERTS_MESSAGE}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
 if [[ "${CODE}" != '1' ]]; then
  echo "Code(${CODE}) error!" >&2; exit 1; fi
+if [[ -n "$(<"${STDOUT}")" ]]; then
+ echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
 ACTUAL_VALUE="$(<"${STDERR}")"
-if [[ "${ACTUAL_VALUE}" != 'No context!' ]]; then
+if [[ "${ACTUAL_VALUE}" != "${ASSERTS_MESSAGE}" ]]; then
  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 
-:> "${STDERR}"
+#
 
-"${SCRIPT}" '42' '' 2>"${STDERR}"; CODE=$?
-if [[ "${CODE}" != '1' ]]; then
- echo "Code(${CODE}) error!" >&2; exit 1; fi
-ACTUAL_VALUE="$(<"${STDERR}")"
-EXPECTED_VALUE="Context: \"42\"
-Value is empty!"
-if [[ "${ACTUAL_VALUE}" != "${EXPECTED_VALUE}" ]]; then
- echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
-
-ACTUAL_TEXTS=(
- 'a' ' ' $'\t' $'\n' $'\r' $'\v' $'\f' $'\x01'
- '!' '"' '#' '$' '%' '&' "'" '(' ')' '*' '+' ',' '-' '.' '/'
- ':' ';' '<' '=' '>' '?' '@' '[' ']' '^' '_' '`' '{' '|' '}' '~' '\'
-)
-for ACTUAL_TEXT in "${ACTUAL_TEXTS[@]}"; do
- :> "${STDERR}"
- "${SCRIPT}" '42' "${ACTUAL_TEXT}" 2>"${STDERR}"; CODE=$?
- if [[ "${CODE}" != '0' ]]; then
-  echo "Code(${CODE}) error!" >&2; exit 1; fi
- ACTUAL_VALUE="$(<"${STDERR}")"
- if [[ -n "${ACTUAL_VALUE}" ]]; then
-  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
-done
-
+rm "${STDOUT}"
 rm "${STDERR}"

@@ -2,20 +2,20 @@
 
 SCRIPT='src/main/bash/files/not_exists.sh'
 
-echo "Running test of \"${SCRIPT}\"..."
+echo "Running test for \"${SCRIPT}\"..."
 
 if [[ -L "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is a symlink!" >&2; exit 1
 elif [[ ! -e "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" does not exist!" >&2; exit 1
 elif [[ ! -f "${SCRIPT}" ]]; then
- echo "\"${SCRIPT}\" is not a regular file!" >&2; exit 1
+ echo "\"${SCRIPT}\" is not a file!" >&2; exit 1
 elif [[ ! -s "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is empty!" >&2; exit 1
 elif [[ ! -x "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is not executable!" >&2; exit 1
 elif ! /usr/local/bin/bash -n "${SCRIPT}"; then
- echo "\"${SCRIPT}\" has wrong syntax!" >&2; exit 1
+ echo "\"${SCRIPT}\" has invalid syntax!" >&2; exit 1
 fi
 
 STDERR="$(mktemp)"
