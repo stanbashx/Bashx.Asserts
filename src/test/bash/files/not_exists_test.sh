@@ -9,7 +9,7 @@ if [[ -L "${SCRIPT}" ]]; then
 elif [[ ! -e "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" does not exist!" >&2; exit 1
 elif [[ ! -f "${SCRIPT}" ]]; then
- echo "\"${SCRIPT}\" is not a regular file!" >&2; exit 1
+ echo "\"${SCRIPT}\" is not a file!" >&2; exit 1
 elif [[ ! -s "${SCRIPT}" ]]; then
  echo "\"${SCRIPT}\" is empty!" >&2; exit 1
 elif [[ ! -x "${SCRIPT}" ]]; then
