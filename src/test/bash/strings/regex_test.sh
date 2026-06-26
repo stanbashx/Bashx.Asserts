@@ -123,10 +123,6 @@ for ASSERTS_TEXT in "${ACTUAL_TEXTS[@]}"; do
 done
 
 # Expects mismatch for texts against self.
-# FOO='\n' "${FOO}" =~ ${FOO} -> \n contains n
-# FOO=$'\n' "${FOO}" =~ ${FOO} -> $'\n' contains $'\n'
-# FOO='a\n' "${FOO}" =~ ${FOO} -> a\n not contains an
-# FOO=$'a\n' "${FOO}" =~ ${FOO} -> a$'\n' contains a$'\n'
 
 ACTUAL_TEXTS=('a' ')' ']' '\n' $'\n' $'a\n')
 for ASSERTS_TEXT in "${ACTUAL_TEXTS[@]}"; do
@@ -176,7 +172,6 @@ done
 :> "${STDERR}"
 
 # Expects mismatch when text has real LF but regex contains literal \n.
-# FOO=$'\n1' BAR='\n1' "${FOO}" =~ ${BAR} -> $'\n'1 not satisfy {\n}1
 
 ASSERTS_TEXT=$'foo\n1\n55\nbaz'
 ASSERTS_REGEX='(^|\n)[1-4]{1}\n[5-7]{2}($|\n)'
@@ -200,7 +195,7 @@ if [[ "${ACTUAL_VALUE}" != "${EXPECTED_VALUE}" ]]; then
 
 :> "${STDERR}"
 
-# FOO='\n1' BAR='\n1' "${FOO}" =~ ${BAR} -> \n1 not satisfy {\n}1
+#
 
 ASSERTS_TEXT='foo\n1\n55\nbaz'
 ASSERTS_REGEX='(^|\n)[1-4]{1}\n[5-7]{2}($|\n)'
@@ -222,7 +217,6 @@ if [[ "${ACTUAL_VALUE}" != "${EXPECTED_VALUE}" ]]; then
 :> "${STDERR}"
 
 # Expects success when both text and regex contain real LF characters.
-# FOO=$'\n1' BAR=$'\n1' "${FOO}" =~ ${BAR} -> $'\n'1 satisfy $'\n'1
 
 ASSERTS_TEXT=$'foo\n1\n55\nbaz'
 ASSERTS_REGEX=$'(^|\n)[1-4]{1}\n[5-7]{2}($|\n)'
@@ -236,7 +230,6 @@ if [[ -n "${ACTUAL_VALUE}" ]]; then
 :> "${STDERR}"
 
 # Expects success when both text and regex use literal backslash-n.
-# FOO='\n1' BAR='\\n1' "${FOO}" =~ ${BAR} -> \n1 satisfy \n1
 
 ASSERTS_TEXT='foo\n1\n55\nbaz'
 ASSERTS_REGEX='(^|\\n)[1-4]{1}\\n[5-7]{2}($|\\n)'
