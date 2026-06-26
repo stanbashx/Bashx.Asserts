@@ -2,7 +2,7 @@
 
 REP_OWNER='stanbashx'
 REP_NAME='Bashx.Asserts'
-VERSION='0.1.1'
+VERSION='0.1.2'
 
 if [[ -d 'build' ]]; then
  echo 'Build dir exists!'; exit 1; fi
