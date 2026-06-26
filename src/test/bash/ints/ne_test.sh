@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-SCRIPT='src/main/bash/ints/eq.sh'
+SCRIPT='src/main/bash/ints/ne.sh'
 
 echo "Running test for \"${SCRIPT}\"..."
 
@@ -152,7 +152,7 @@ for ASSERTS_ACTUAL in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
  ASSERTS_CONTEXT='foo'
- ASSERTS_EXPECTED='42'
+ ASSERTS_EXPECTED="${ASSERTS_ACTUAL}"
  "${SCRIPT}" "${ASSERTS_CONTEXT}" "${ASSERTS_ACTUAL}" "${ASSERTS_EXPECTED}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
  if [[ "${CODE}" != '1' ]]; then
   echo "Code(${CODE}) error!" >&2; exit 1; fi
@@ -160,27 +160,7 @@ for ASSERTS_ACTUAL in "${VALUES[@]}"; do
   echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
  ACTUAL_VALUE="$(<"${STDERR}")"
  EXPECTED_VALUE="Context: \"${ASSERTS_CONTEXT}\"
-Actual: ${ASSERTS_ACTUAL}
-Expected: ${ASSERTS_EXPECTED}"
- if [[ "${ACTUAL_VALUE}" != "${EXPECTED_VALUE}" ]]; then
-  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
-done
-
-VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64' '-2147483648' '2147483647')
-for ASSERTS_EXPECTED in "${VALUES[@]}"; do
- :> "${STDOUT}"
- :> "${STDERR}"
- ASSERTS_CONTEXT='foo'
- ASSERTS_ACTUAL='42'
- "${SCRIPT}" "${ASSERTS_CONTEXT}" "${ASSERTS_ACTUAL}" "${ASSERTS_EXPECTED}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
- if [[ "${CODE}" != '1' ]]; then
-  echo "Code(${CODE}) error!" >&2; exit 1; fi
- if [[ -n "$(<"${STDOUT}")" ]]; then
-  echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
- ACTUAL_VALUE="$(<"${STDERR}")"
- EXPECTED_VALUE="Context: \"${ASSERTS_CONTEXT}\"
-Actual: ${ASSERTS_ACTUAL}
-Expected: ${ASSERTS_EXPECTED}"
+Values(${#ASSERTS_ACTUAL}) equal: \"${ASSERTS_ACTUAL}\""
  if [[ "${ACTUAL_VALUE}" != "${EXPECTED_VALUE}" ]]; then
   echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
 done
@@ -190,7 +170,23 @@ for ASSERTS_ACTUAL in "${VALUES[@]}"; do
  :> "${STDOUT}"
  :> "${STDERR}"
  ASSERTS_CONTEXT='foo'
- ASSERTS_EXPECTED="${ASSERTS_ACTUAL}"
+ ASSERTS_EXPECTED='42'
+ "${SCRIPT}" "${ASSERTS_CONTEXT}" "${ASSERTS_ACTUAL}" "${ASSERTS_EXPECTED}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
+ if [[ "${CODE}" != '0' ]]; then
+  echo "Code(${CODE}) error!" >&2; exit 1; fi
+ if [[ -n "$(<"${STDOUT}")" ]]; then
+  echo "Script \"${SCRIPT}\" has stdout!" >&2; exit 1; fi
+ ACTUAL_VALUE="$(<"${STDERR}")"
+ if [[ -n "${ACTUAL_VALUE}" ]]; then
+  echo "Actual value(${#ACTUAL_VALUE}) is: \"${ACTUAL_VALUE}\"!" >&2; exit 1; fi
+done
+
+VALUES=('-42' '-8' '0' '1' '2' '4' '8' '16' '32' '64' '-2147483648' '2147483647')
+for ASSERTS_EXPECTED in "${VALUES[@]}"; do
+ :> "${STDOUT}"
+ :> "${STDERR}"
+ ASSERTS_CONTEXT='foo'
+ ASSERTS_ACTUAL='42'
  "${SCRIPT}" "${ASSERTS_CONTEXT}" "${ASSERTS_ACTUAL}" "${ASSERTS_EXPECTED}" > "${STDOUT}" 2> "${STDERR}"; CODE=$?
  if [[ "${CODE}" != '0' ]]; then
   echo "Code(${CODE}) error!" >&2; exit 1; fi
